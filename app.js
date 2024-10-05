@@ -1,23 +1,25 @@
-const apiKey = '3c73acdc0f41c548c2a6b2bf65f0fa97'; // Ersätt detta med din API-nyckel
-
 document.getElementById('get-weather-btn').addEventListener('click', () => {
   const city = document.getElementById('city-input').value;
   if (city) {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+    fetch(`/weather?city=${encodeURIComponent(city)}`)
       .then(response => response.json())
       .then(data => {
-        const weatherInfo = `Temperature in ${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
-        document.getElementById('weather-info').innerText = weatherInfo;
+        if (data.cod === 200) {
+          const weatherInfo = `Temperatur i ${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
+          document.getElementById('weather-info').innerText = weatherInfo;
+        } else {
+          document.getElementById('weather-info').innerText = 'Staden kunde inte hittas';
+        }
       })
-      .catch(() => {
-        document.getElementById('weather-info').innerText = 'City not found';
+      .catch((error) => {
+        console.error('Fel vid hämtning av väderdata:', error);
+        document.getElementById('weather-info').innerText = 'Ett fel uppstod vid hämtning av väderdata';
       });
   }
-  
 });
+
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(() => {
-      console.log('Service Worker Registered');
-    });
-  }
-  
+  navigator.serviceWorker.register('/sw.js').then(() => {
+    console.log('Service Worker registrerad');
+  });
+}
