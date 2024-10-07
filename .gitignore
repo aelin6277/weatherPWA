@@ -1,0 +1,18 @@
+# Node.js modules
+node_modules/
+
+# Miljövariabler
+.env
+
+# Loggfiler
+logs/
+*.log
+
+# Byggfiler
+dist/
+build/
+
+# Systemfiler
+.DS_Store
+Thumbs.db
+

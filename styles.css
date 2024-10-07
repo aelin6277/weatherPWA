@@ -60,3 +60,15 @@ input, button {
         max-width: 600px; /* Sätt maxbredd för större skärmar */
     }
 }
+#network-status {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#network-status.online {
+    color: green;
+}
+
+#network-status.offline {
+    color: red;
+}
