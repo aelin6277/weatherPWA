@@ -1,12 +1,24 @@
+// Ladda miljövariabler från .env-filen
+require('dotenv').config();
+
+// Importera nödvändiga moduler
 const express = require('express');
 const fetch = require('node-fetch');
-const app = express();
 const path = require('path');
-const apiKey = '0a040cc8e256259379844e6e2bcaac96'; // Ersätt med din faktiska API-nyckel
 
-// Serverar statiska filer från projektets rotmapp
+// Skapa en Express-app
+const app = express();
+
+// Hämta API-nyckeln från miljövariablerna
+const apiKey = process.env.OPENWEATHER_API_KEY;
+
+// Logga API-nyckeln för felsökning
+console.log('Använd API-nyckel:', apiKey);
+
+// Middleware för att servera statiska filer
 app.use(express.static(path.join(__dirname, '..')));
 
+// Route för att hämta väderdata
 app.get('/weather', async (req, res) => {
   const city = req.query.city;
   try {
@@ -21,6 +33,7 @@ app.get('/weather', async (req, res) => {
   }
 });
 
+// Starta servern
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servern körs på port ${PORT}`);
