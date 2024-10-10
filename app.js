@@ -1,9 +1,16 @@
 // Registrera service workern
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').then(() => {
-    console.log('Service Worker registrerad');
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Service Worker registrerad med scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Service Worker registrering misslyckades:', error);
+      });
   });
 }
+
 
 // Funktion för att uppdatera nätverksstatus
 function updateOnlineStatus() {

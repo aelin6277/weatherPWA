@@ -1,4 +1,5 @@
 const cacheName = 'weather-app-cache-v1';
+
 const assetsToCache = [
   '/',
   '/index.html',
@@ -6,10 +7,7 @@ const assetsToCache = [
   '/app.js',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/manifest.json',
-  '/path/to/index.html',
-  '/path/to/styles.css',
-  '/path/to/app.js'
+  '/manifest.json'
 ];
 
 // Installera service worker och cacha resurser
@@ -33,4 +31,18 @@ self.addEventListener('fetch', event => {
     );
   });
 
+  self.addEventListener('activate', event => {
+    const cacheWhitelist = [cacheName];
+    event.waitUntil(
+      caches.keys().then(keyList =>
+        Promise.all(
+          keyList.map(key => {
+            if (!cacheWhitelist.includes(key)) {
+              return caches.delete(key);
+            }
+          })
+        )
+      )
+    );
+  });
   
